@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=windows-1251">
+	<TITLE>utags - Universal Tags</TITLE>
+	<META NAME="GENERATOR" CONTENT="OpenOffice.org 3.2  (Unix)">
+	<META NAME="AUTHOR" CONTENT="Alexei Mozhaev">
+	<META NAME="CREATED" CONTENT="20111019;16015500">
+	<META NAME="CHANGEDBY" CONTENT="Alexei Mozhaev">
+	<META NAME="CHANGED" CONTENT="20111019;16023800">
+	<STYLE TYPE="text/css">
+	<!--
+		@page { margin: 0.79in }
+		P { margin-bottom: 0.08in }
+		H2 { margin-bottom: 0.08in }
+		A:link { so-language: zxx }
+	-->
+	</STYLE>
+</HEAD>
+<BODY>
+
+<H1>UTAGS</H1>
+
+<H2><A NAME="h113876-1"></A>1. Что это такое.&nbsp;&nbsp;</H2> <P><A
+NAME="2.kakjetopoluchit"></A>Поиск по проекту всех мест в
+<STRONG>C/C++</STRONG>, <STRONG>Python</STRONG> и <STRONG>Perl</STRONG> коде,
+где используется та или иная функция, класс, члены/методы класса, структура,
+тип, константа, переменная и вообще любое слово из кода. Поиск осуществляется
+прямо из vim по горячей клавише, когда курсор находится на нужном слове.
+Работает довольно быстро, т.к. использует предварительно подготовленный
+индекс.</P>
+
+<H2><A NAME="h113876-2"></A>2. Как это получить.&nbsp;&nbsp;</H2>
+<P><A NAME="p75518-1"></A>Для этого вам понадобится
+скопировать к себе на машину три
+файла:<BR><A HREF="utags" TARGET="_blank">utags</A> (shell script) <BR>
+<A HREF="find_above" TARGET="_blank">find_above</A> (shell script) <BR>
+<A HREF="findusage.vim" TARGET="_blank">findusage.vim</A></P>
+<P><A NAME="3.kakispolzovat"></A><BR>Первые два файла
+скопируйте в любой ваш каталог, который
+уже находится в переменной PATH, если
+такового нет, то создайте его и добавьте
+в PATH.<BR>Последний файл - это плагин для
+vim'а, скопируйте его к себе в папку
+$HOME/.vim/plugin/ (если такой нет, создайте!).</P>
+
+<H2><A NAME="h113876-3"></A>3. Как использовать.&nbsp;&nbsp;</H2>
+<P><A NAME="p75518-2"></A>Сначала нужно сгенерировать
+базу слов. Делается это, например, так:<BR><STRONG>cd
+your_proj_path &amp;&amp; utags -g . &gt; .utags</STRONG><BR>
+Для больших проектов генерация тэгов может занять продолжительное время.</P>
+<P><A NAME="p75518-31"></A>Затем, когда вы находитесь в одной из папок проекта
+и редактируете какой-либо файл на любом уровне вложенности, находясь на
+интересующем вас слове, нажмите поочереди две клавиши:
+&lt;<STRONG>\</STRONG>&gt; и &lt;<STRONG>U</STRONG>&gt; (нажимать нужно без
+долгой задержки, быстро, буква U здесь большая, т.е. нажимать с зажатым shift).
+Тогда vim откроет в нижнем окне список использования данного слова по всем
+исходникам проекта. </P>
+<P><A NAME="p75518-41"></A>Есть еще пара сочетаний,
+которые позволяют ограничить область
+поиска:<BR>&lt;<STRONG>\</STRONG>&gt;, &lt;<STRONG>D</STRONG>&gt;
+- поиск только по хэдерам<BR>&lt;<STRONG>\</STRONG>&gt;,
+&lt;<STRONG>P</STRONG>&gt; - поиск только по текущей
+папке<BR>Буквы D и P здесь тоже большие,
+используем <STRONG>Shift</STRONG>.</P>
+<P><A NAME="p75518-51"></A>Клавиша &lt;<STRONG>\</STRONG>&gt;
+здесь определяется настройками vim'а -
+это клавиша &lt;Leader&gt;, которую можно
+поменять, например, на запятую добавив
+в $HOME/.vimrc команду:</P>
+<BLOCKQUOTE>:let mapleader = &quot;,&quot;</BLOCKQUOTE>
+<P><A NAME="4.peremeshheniepospiskurezultatov"></A>
+</P>
+
+<H2><A NAME="h113876-4"></A>4. Перемещение по списку результатов.&nbsp;&nbsp;</H2>
+<P><A NAME="p75518-61"></A>По списку можно перемещаться
+дабл-кликом или с помощью клавиатуры
+(стрелочки и Enter). Перевести курсор в
+нижнее окно с помощью клавы - &lt;Ctrl&gt;+&lt;w&gt;,
+&lt;Down&gt;, а обратно в верхнее - &lt;Ctrl&gt;+&lt;w&gt;,
+&lt;Up&gt;.</P>
+<P><A NAME="p75518-71"></A>По желанию можно добавить мапы для вима для
+перемещения по полученному списку. Например, такие:</P>
+<BLOCKQUOTE>map &lt;F6&gt; :copen&lt;CR&gt;<BR>map &lt;F7&gt;
+:cprevious&lt;CR&gt;<BR>map &lt;F8&gt; :cnext&lt;CR&gt;</BLOCKQUOTE>
+<P><A NAME="p75518-81"></A>Эти строки следует добавлять в <STRONG>$HOME/.vimrc</STRONG></P>
+<P><A NAME="p75518-91"></A>Если остались вопросы или есть предложения по
+улучшению данной тулзы, пишите мне на мыло: luinnar(at)yandex.ru</P>
+<P><A NAME="p75518-101"></A>Have a fun! </P>
+
+</BODY>
+</HTML>

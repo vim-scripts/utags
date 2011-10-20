@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+
+# Maintainer:  Alexei Mozhaev
+# Last Change: 09-Jun-11
+
+relpath_only=0
+case "$1" in
+    --relpath) relpath_only=1; shift ;;
+esac
+
+[ $# -lt 1 ] && echo "Usage: `basename $0` --relpath file-name [dir]" && exit 1
+
+fname="$1"
+if [ -z "$2" ]; then
+    dir="`pwd`"
+else
+    dir="`(cd "$2" && pwd)`"
+fi
+
+relpath=''
+
+while [ -d "$dir" ]
+do
+    if [ -f "$dir/$fname" ]; then
+        if [ $relpath_only -eq 0 ]; then
+            echo "$dir/$fname"
+        else
+            [ -n "$relpath" ] && echo "$relpath" || echo './'
+        fi
+        exit 0
+    fi
+    dir_above="${dir%/*}"
+    [ "$dir_above" == "$dir" ] && break
+    dir="$dir_above"
+    [ -z "$relpath" ] && relpath=".." || relpath="../$relpath"
+done
+exit 1

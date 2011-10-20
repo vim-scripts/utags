@@ -1,0 +1,91 @@
+#!/usr/bin/env bash
+
+# Maintainer:  Alexei Mozhaev
+# Last Change: 05-Jul-11
+
+WORD_CHARS='_a-zA-Z0-9'
+MAX_FILE_NUM=100
+
+function usage_exit()
+{
+    name=`basename $0`
+    echo "Usage:"
+    echo "	$name -g|--generate-tags [-n|--numbers] dirs"
+    echo "	$name -t|--find-tag tag [utagsfile]"
+    echo "	$name -h|--help"
+    exit 1
+}
+
+function grep_source_code_files()
+{
+    while read fname
+    do
+        name="${fname/*\/}"
+        ext="${name/*.}"
+        case "$ext" in
+            "$name") # i.e. no extension
+                case "`file -b "$fname"`" in
+                    *python*)
+                        echo "$fname"
+                        ;;
+                esac
+                ;;
+            *) # consider all files with extensions are source code files
+                echo "$fname"
+                ;;
+        esac
+    done
+}
+
+[ $# -lt 2 ] && usage_exit
+
+case "$1" in
+    -t|--find-tag)
+        tag="$2"
+
+        if [ $# -gt 2 ]; then
+            tagsfile="$3"
+        elif [ -n "$proj" ] && [ -f "$proj/.utags" ]; then
+            tagsfile="$proj/.utags"
+        else
+            tagsfile="`find_above .utags 2> /dev/null`"
+            [ $? -eq 0 ] || exit 1
+        fi
+        dir="`dirname "$tagsfile"`"
+        awk '$1 == "'"$tag"'" {for(i=3; i<=NF; ++i) print $i; exit;}' "$tagsfile"  | sed 's@^\./@@' | sed '/^[^/]/s@^@'"$dir/"'@g'
+        ;;
+
+    -g|--generate)
+        shift
+
+        num_tags=0
+        case "$1" in
+            -n|--numbers) num_tags=1; shift ;;
+        esac
+
+        find $@ -type f -name "*.[ch]" -o -name "*.[ch]pp" -o -name "*.in*" -o -name "*.py" -o -name "*.p[lm]" -o -name "*.sfdl" -o \! -name "*.*" |
+        grep_source_code_files |
+        sed 's@^\./@@' |
+        while read fname
+        do
+            echo "file: $fname"
+            cat "$fname" | tr -sc "$WORD_CHARS" '\n' | uniq | sort -u | grep -v '^[0-9]' | grep '.'
+            # There can be lots of numeric constants in the source code, so enable it only if you realy want to search them
+            [ $num_tags -eq 1 ] &&
+            cat "$fname" | tr -sc "0-9" '\n' | uniq | sort -u | grep '.'
+        done |
+        awk '
+        $1 == "file:" { file = $2; next; }
+        {
+            if (counts[$1] < '"$MAX_FILE_NUM"')
+                tags[$1] = tags[$1]" "file;
+            counts[$1]++;
+        }
+        END { for(tag in tags) print tag, counts[tag], tags[tag]; }
+        ' | sort -nk2
+        ;;
+
+    -h|--help)
+        usage_exit
+        ;;
+esac

@@ -1,0 +1,40 @@
+This is a mirror of http://www.vim.org/scripts/script.php?script_id=3778
+
+UTAGS
+
+WHAT IS IT.
+
+Utags provides an ability to search for usage of a C/C++/Python/Perl function, a type name, a class method/member, a variable or any other word in a source code of a project. It's like a fast, convenient grep by the whole word. Search is performed from vim by a hot-key when cursor is on the word you want to find. It works quickly since utags uses a beforehand generated index.
+
+HOW TO USE IT.
+
+First of all you should generate an index. It's done by the following command:
+cd your_proj_path && utags -g . > .utags
+It can take a while for big projects.
+Further when you edit a file from the project and current folder is a project subfolder and the vim cursor is on the word you want to find in the project, press and release one by one two keys: <\> and <U> (without delay between pressing, quite quickly; letter U is in uppercase here, so press it holding Shift). If you have done everything right, vim opens a window in the top with a list of results.
+
+A couple of other hot-keys limit the search area:
+<\>, <D> - search only in the C/C++ headers.
+<\>, <P> - search only in the current directory.
+Letters D and P are in upper case here too, so press them with Shift held.
+
+Key <\> is defined by vim configuration and can be changed, for example, on a comma by adding the following line into $HOME/.vimrc:
+	let mapleader = ","
+
+GOING THROUGH RESULTS.
+
+You may select items from the result list using mouse double-click or using a keyboard (arrows and Enter). In order to move vim cursor in the bottom window using keyboard press <Ctrl>+<w>, <Down>, and to return to the top window: <Ctrl>+<w>, <Up>.
+
+You also may assign hot-keys to go thru the result list faster:
+map <F6> :copen<CR>
+map <F7> :cprevious<CR>
+map <F8> :cnext<CR>
+
+These lines should be added to $HOME/.vimrc
+
+If you have any question about this tool or know how to enhance it, please email me at luinnar(at)yandex.ru
+
+Have a fun!
+
+In English: http://luinnar.narod.ru/tools/utags/index-en.html
+На русском: http://luinnar.narod.ru/tools/utags/
