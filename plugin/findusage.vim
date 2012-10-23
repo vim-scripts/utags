@@ -1,5 +1,5 @@
 " Maintainer:  Alexei Mozhaev
-" Last Change: 14-Jun-11
+" Last Change: 23-Oct-12
 
 let $utags = "utags"
 
@@ -13,7 +13,7 @@ func! FindUsageShowResults( title )
   copen
   set cul
   set number
-  silent exe "file ".a:title
+  "silent exe "file ".a:title
 endfunc
 
 "------------------------------------------------------------------------
@@ -45,6 +45,8 @@ func! FindTagFiles( tagname, filter, proj_only )
 
   if !a:proj_only
     let cmd .= "$utags -t " . a:tagname . ";"
+  elseif empty($proj)
+    let cmd .= FindCodeFilesCmd( "$proj" ) . ";"
   endif
 
   if !empty(a:filter)
