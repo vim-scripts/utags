@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-# Maintainer:  Alexei Mozhaev
-# Last Change: 05-Jul-11
+# Maintainer:  Alexei Mozhaev (lxmzhv@gmail.com)
+# Last Change: 16-Nov-12
 
 WORD_CHARS='_a-zA-Z0-9'
 MAX_FILE_NUM=100
@@ -63,7 +63,7 @@ case "$1" in
             -n|--numbers) num_tags=1; shift ;;
         esac
 
-        find $@ -type f -name "*.[ch]" -o -name "*.[ch]pp" -o -name "*.in*" -o -name "*.py" -o -name "*.p[lm]" -o -name "*.sfdl" -o \! -name "*.*" |
+        find $@ -type f -name "*.[ch]" -o -name "*.[ch]pp" -o -name "*.[ch]xx" -o -name "*.cc" -o -name "*.hh" -o -name "*.in*" -o -name "*.py" -o -name "*.p[lm]" -o -name "*.i" -o \! -name "*.*" |
         grep_source_code_files |
         sed 's@^\./@@' |
         while read fname

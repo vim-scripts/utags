@@ -1,5 +1,5 @@
-" Maintainer:  Alexei Mozhaev
-" Last Change: 23-Oct-12
+" Maintainer:  Alexei Mozhaev (lxmzhv@gmail.com)
+" Last Change: 16-Nov-12
 
 let $utags = "utags"
 
@@ -53,7 +53,9 @@ func! FindTagFiles( tagname, filter, proj_only )
     let cmd = AddCmdFilter( cmd, a:filter )
   endif
 
-  let cmd = AddEqualFilesFilter( cmd )
+  if exists("g:FindUsage_EqualFilesFilter") && g:FindUsage_EqualFilesFilter
+    let cmd = AddEqualFilesFilter( cmd )
+  endif
 
   "echo "Performing command: ".cmd
   return system( cmd )
